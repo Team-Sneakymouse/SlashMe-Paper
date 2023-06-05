@@ -28,7 +28,6 @@ public class CommandSendMessage extends Command {
             add("sendm");
         }});
 
-        //this.permissionMessage(Component.text(ChatColor.DARK_RED + "Sorry! You do not have permission to this command yet!"));
     }
 
     @Override
@@ -61,7 +60,7 @@ public class CommandSendMessage extends Command {
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DvZChatBubbles.getInstance(), () -> {
                 if (chatBubble.removeMessage(0)) DvZChatBubbles.getInstance().removePlayer(player, chatBubble);
-            }, Math.max(message.length(), 60));
+            }, Math.max(message.length()*2, 120));
         } else{
             ChatBubble chatBubble = DvZChatBubbles.getInstance().playerChatBubbles.get(player);
 
@@ -69,8 +68,19 @@ public class CommandSendMessage extends Command {
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(DvZChatBubbles.getInstance(), ()->{
                 if (chatBubble.removeMessage(messageID)) DvZChatBubbles.getInstance().removePlayer(player, chatBubble);
-            }, Math.max(message.length(), 60));
+            }, Math.max(message.length()*2, 120));
         }
+
+        logSpy(player.getName(), message);
+
+
         return false;
+    }
+
+    private void logSpy(String user, String message){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            if(player.hasPermission("dvzchatbubbles.mespy"))
+                player.sendMessage(Component.text(ChatColor.translateAlternateColorCodes('&', "&7[&e/Me&7]: &e" + user + "&7: " + message)));
+        }
     }
 }

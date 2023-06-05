@@ -40,7 +40,7 @@ public class ChatBubble {
 
         this.display.setInterpolationDuration(0);
         this.display.setInterpolationDelay(-1);
-        this.display.setTransformation(new Transformation(new Vector3f(0F,0.8F,0F), new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
+        this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F,0.5F), new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
 
         this.player.addPassenger(this.display);
     }
