@@ -12,5 +12,5 @@
 //    id 'org.gradle.toolchains.foojay-resolver' version '0.4.0'
 //}
 //
-//rootProject.name = 'DvZChatBubbles'
+//rootProject.name = 'SlashMe'
 //include('lib')
