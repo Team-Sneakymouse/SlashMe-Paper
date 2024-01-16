@@ -8,12 +8,15 @@ import org.jetbrains.annotations.NotNull;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.util.HSVLike;
 import net.sneakymouse.slashme.SlashMe;
 import net.sneakymouse.slashme.types.MeEntity;
-import net.sneakymouse.slashme.util.PapiUtil;
 
 public class CommandMe extends Command {
 
@@ -79,7 +82,7 @@ public class CommandMe extends Command {
         }
     }
 
-    private static @NotNull Component makeMeSpyComponent(Player player, String message, boolean coordColored) {
+    private static @NotNull Component makeMeSpyComponent(Player player, String message, boolean global) {
         String playerNameString = SlashMe.getInstance().getConfig().getString("playerNameString", "playerName").replace("playerName", player.getName());
 
         if (SlashMe.getInstance().papiActive) {
@@ -89,17 +92,32 @@ public class CommandMe extends Command {
         TextColor nameColor;
         TextColor messageColor;
         
-        if (coordColored) {
+        if (global) {
             nameColor = coordsToRGB(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-            messageColor = TextColor.color(11184810);
+            messageColor = NamedTextColor.GRAY;
         } else {
-            nameColor = TextColor.color(11184810);
-            messageColor = TextColor.color(16777215);
+            nameColor = NamedTextColor.GRAY;
+            messageColor = NamedTextColor.WHITE;
         }
 
-        Component component = Component.text("[/me] " + playerNameString).color(nameColor);
-        component = component.append(Component.text(": ").color(TextColor.color(11184810)));
-        component = component.append(Component.text(message).color(messageColor));
+        Component nameComponent = Component.text("[/me] " + playerNameString).color(nameColor);
+
+        String hoverText = "<yellow>Account name: <gold>" + ((TextComponent) player.displayName()).content();
+
+        if (global) {
+            if (SlashMe.getInstance().papiActive) {
+                hoverText += PlaceholderAPI.setPlaceholders(player, "\n<yellow>Voicechat: %cond_voicechat-status%");
+            }
+            hoverText += "\n<reset>Teleport to player";
+
+            nameComponent = nameComponent.clickEvent(ClickEvent.runCommand("/minecraft:tp " + player.getName()));
+        }
+        nameComponent = nameComponent.hoverEvent(HoverEvent.showText(MiniMessage.miniMessage().deserialize(hoverText)));
+
+        Component colonComponent = Component.text(": ").color(NamedTextColor.GRAY);
+        Component textComponent = Component.text(message).color(messageColor);
+
+        Component component = Component.join(Component.empty(), nameComponent, colonComponent.append(textComponent));
 
         return component;
     }
