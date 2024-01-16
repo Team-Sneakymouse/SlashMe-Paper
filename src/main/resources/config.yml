@@ -1,0 +1,10 @@
+# The string that will take the place of the playername in mespy. Supports PAPI placeholder replacement.
+# "playerName" will be replaced with the player's account name, even when PAPI is not running.
+playerNameString: "%sneakycharacters_character_name_noformat% [playerName]"
+# The radius that is checked by slashme.mespy.near
+meSpyNearRadius: 12
+# The square that is used to determine the hue and saturation of the colored names in slashme.mespy.global
+xMin: 4400
+xMax: 5600
+yMin: 4400
+yMax: 5600

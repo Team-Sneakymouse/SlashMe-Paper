@@ -23,6 +23,8 @@ public class SlashMe extends JavaPlugin {
     public void onEnable() {
 		instance = this;
 
+		saveDefaultConfig();
+
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMe());
     }
 
