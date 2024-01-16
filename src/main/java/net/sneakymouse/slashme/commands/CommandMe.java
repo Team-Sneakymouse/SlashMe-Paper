@@ -6,12 +6,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.util.HSVLike;
 import net.sneakymouse.slashme.SlashMe;
 import net.sneakymouse.slashme.types.MeEntity;
+import net.sneakymouse.slashme.util.PapiUtil;
 
 public class CommandMe extends Command {
 
@@ -79,6 +81,10 @@ public class CommandMe extends Command {
 
     private static @NotNull Component makeMeSpyComponent(Player player, String message, boolean coordColored) {
         String playerNameString = SlashMe.getInstance().getConfig().getString("playerNameString", "playerName").replace("playerName", player.getName());
+
+        if (SlashMe.getInstance().papiActive) {
+            playerNameString = PlaceholderAPI.setPlaceholders(player, playerNameString);
+        }
 
         TextColor nameColor;
         TextColor messageColor;

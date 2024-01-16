@@ -5,3 +5,9 @@ description: A plugin for Minecraft Paper that allowes users to express their /m
 authors: [Team Sneakymouse, Momo the Bard, Bungo]
 website: https://rawb.tv
 api-version: "1.19"
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false

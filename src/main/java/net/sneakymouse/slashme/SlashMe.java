@@ -3,6 +3,7 @@ package net.sneakymouse.slashme;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -16,6 +17,8 @@ public class SlashMe extends JavaPlugin {
 	public static final String IDENTIFIER = "slashme";
 
 	private static SlashMe instance;
+	
+	public boolean papiActive = false;
 
 	public Map<Player, MeEntity> playerChatBubbles = new HashMap<>();
 
@@ -26,6 +29,10 @@ public class SlashMe extends JavaPlugin {
 		saveDefaultConfig();
 
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMe());
+
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+			papiActive = true;
+        }
     }
 
 	@EventHandler
