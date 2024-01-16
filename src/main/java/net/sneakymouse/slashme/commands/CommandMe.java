@@ -1,5 +1,7 @@
 package net.sneakymouse.slashme.commands;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -117,9 +119,7 @@ public class CommandMe extends Command {
         Component colonComponent = Component.text(": ").color(NamedTextColor.GRAY);
         Component textComponent = Component.text(message).color(messageColor);
 
-        Component component = Component.join(Component.empty(), nameComponent, colonComponent.append(textComponent));
-
-        return component;
+        return List.of(nameComponent, colonComponent, textComponent).stream().collect(Component.toComponent());
     }
 
     private static @NotNull TextColor coordsToRGB(int x, int z) {
