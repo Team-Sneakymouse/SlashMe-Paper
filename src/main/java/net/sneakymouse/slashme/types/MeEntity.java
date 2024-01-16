@@ -12,6 +12,9 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
 public class MeEntity {
 
     private final Player player;
@@ -28,7 +31,7 @@ public class MeEntity {
         location.setY(location.getY() + this.player.getEyeHeight() * 0.85);
 
         this.display = this.player.getWorld().spawn(location, TextDisplay.class);
-        this.display.setText(this.makeMessage());
+        this.display.text(this.makeMessage());
 
         this.display.setBillboard(Display.Billboard.CENTER);
         this.display.setLineWidth(150);
@@ -51,7 +54,7 @@ public class MeEntity {
         int messageId = this.messages.size();
 
         this.messages.add(message);
-        this.display.setText(this.makeMessage());
+        this.display.text(this.makeMessage());
 
         return messageId;
     }
@@ -66,17 +69,17 @@ public class MeEntity {
 
         this.messages.set(id, null);
 
-        String message = this.makeMessage();
+        Component message = this.makeMessage();
 
         if (message != null) {
-            this.display.setText(this.makeMessage());
+            this.display.text(message);
             return false;
         } else {
             return true;
         }
     }
 
-    private String makeMessage() {
+    private Component makeMessage() {
         String message = null;
 
         for (int i = 0; i < this.messages.size(); i ++) {
@@ -89,7 +92,9 @@ public class MeEntity {
             }
         }
 
-        return message;
+        if (message == null) return null;
+
+        return MiniMessage.miniMessage().deserialize(MiniMessage.miniMessage().escapeTags(message));
     }
 
 }
