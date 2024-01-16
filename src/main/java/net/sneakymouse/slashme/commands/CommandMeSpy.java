@@ -74,7 +74,11 @@ public class CommandMeSpy extends CommandBase {
     @Override
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
         if(args.length == 1){
-            return List.of("none", "self", "near", "global");
+            if (sender instanceof Player player && player.hasPermission(SlashMe.IDENTIFIER + ".admin")) {
+                return List.of("none", "self", "near", "global");
+            } else {
+                return List.of("none", "self", "near");
+            }
         } else{
             return List.of();
         }
