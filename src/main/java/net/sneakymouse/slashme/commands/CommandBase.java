@@ -10,7 +10,7 @@ public class CommandBase extends Command {
 
     protected CommandBase(@NotNull String name) {
         super(name);
-        this.setPermission(SlashMe.IDENTIFIER + ".command.me");
+        this.setPermission(SlashMe.IDENTIFIER + ".command." + this.getName());
     }
 
     @Override

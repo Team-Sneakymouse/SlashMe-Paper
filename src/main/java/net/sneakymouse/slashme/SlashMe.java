@@ -7,9 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.sneakymouse.slashme.commands.CommandMe;
+import net.sneakymouse.slashme.commands.*;
 import net.sneakymouse.slashme.types.MeEntity;
 
 public class SlashMe extends JavaPlugin {
@@ -29,6 +30,9 @@ public class SlashMe extends JavaPlugin {
 		saveDefaultConfig();
 
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMe());
+		getServer().getCommandMap().register(IDENTIFIER, new CommandMeSpy());
+
+		getServer().getPluginManager().addPermission(new Permission(IDENTIFIER + ".admin"));
 
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			papiActive = true;
