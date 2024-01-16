@@ -5,53 +5,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.sneakymouse.slashme.commands.CommandCleanTextDisplays;
-import net.sneakymouse.slashme.commands.CommandSendMessage;
-import net.sneakymouse.slashme.types.ChatBubble;
+import net.sneakymouse.slashme.commands.CommandMe;
+import net.sneakymouse.slashme.types.MeEntity;
 
 public class SlashMe extends JavaPlugin {
 
-	public Map<Player, ChatBubble> playerChatBubbles = new HashMap<>();
+	public static final String IDENTIFIER = "slashme";
 
 	private static SlashMe instance;
+
+	public Map<Player, MeEntity> playerChatBubbles = new HashMap<>();
 
     @Override
     public void onEnable() {
 		instance = this;
 
-		registerEvents();
-		registerCommands();
+		getServer().getCommandMap().register(IDENTIFIER, new CommandMe());
     }
 
-    @Override
-    public void onDisable() {
-    	for (ChatBubble chatBubble: playerChatBubbles.values()) {
-    		chatBubble.remove();
-    	}
-    	playerChatBubbles.clear();
+	@EventHandler
+    public void onPluginDisable(PluginDisableEvent event) {
+        if (event.getPlugin() == this) {
+			for (MeEntity chatBubble: playerChatBubbles.values()) {
+				chatBubble.remove();
+			}
+			playerChatBubbles.clear();
+		}
     }
 
-	private void registerEvents(){
-		//Commented out. Just un-comment if wanting all chat messages -> bubble chat
-		//Bukkit.getServer().getPluginManager().registerEvents(new ChatEvents(), this);
-	}
-
-	private void registerCommands(){
-		getServer().getCommandMap().register("slashme", new CommandCleanTextDisplays("cleantextdisplays"));
-		getServer().getCommandMap().register("slashme", new CommandSendMessage("sendmessage"));
-	}
-
-    public void removePlayer(Player player, ChatBubble chatBubble) {
+    public void removePlayer(Player player, MeEntity chatBubble) {
     	chatBubble.remove();
     	playerChatBubbles.remove(player);
     }
-
-    public Collection<ChatBubble> getChatBubbles() {
-		return playerChatBubbles.values();
-	}
-
 
 	public static SlashMe getInstance(){
 		return instance;

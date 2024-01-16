@@ -12,13 +12,13 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
-public class ChatBubble {
+public class MeEntity {
 
     private final Player player;
     private final List<String> messages;
     private TextDisplay display = null;
 
-    public ChatBubble(Player player, String message) {
+    public MeEntity(Player player, String message) {
         this.player = player;
         messages = new ArrayList<>(Collections.singletonList(message));
     }
@@ -32,14 +32,11 @@ public class ChatBubble {
 
         this.display.setBillboard(Display.Billboard.CENTER);
         this.display.setLineWidth(150);
-        this.display.setSeeThrough(false);
-        this.display.setDefaultBackground(false);
         this.display.setShadowed(true);
         this.display.setBrightness(new Display.Brightness(15, 15));
-
-        this.display.setInterpolationDuration(0);
-        this.display.setInterpolationDelay(-1);
         this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F,0.5F), new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
+
+        this.display.addScoreboardTag("MeEntity");
 
         this.player.addPassenger(this.display);
     }
