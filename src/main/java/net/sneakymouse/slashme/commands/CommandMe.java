@@ -3,7 +3,6 @@ package net.sneakymouse.slashme.commands;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +19,12 @@ import net.kyori.adventure.util.HSVLike;
 import net.sneakymouse.slashme.SlashMe;
 import net.sneakymouse.slashme.types.MeEntity;
 
-public class CommandMe extends Command {
+public class CommandMe extends CommandBase {
 
     public CommandMe() {
         super("me");
         this.usageMessage = "/" + this.getName() + " [Message]";
         this.description = "Describe your actions in a holographic message on your body.";
-        this.setPermission(SlashMe.IDENTIFIER + ".command.me");
     }
 
     @Override
