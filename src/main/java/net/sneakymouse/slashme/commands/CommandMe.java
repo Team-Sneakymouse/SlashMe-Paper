@@ -90,14 +90,11 @@ public class CommandMe extends CommandBase {
         }
 
         TextColor nameColor;
-        TextColor messageColor;
         
         if (global) {
             nameColor = coordsToRGB(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-            messageColor = NamedTextColor.GRAY;
         } else {
             nameColor = NamedTextColor.GRAY;
-            messageColor = NamedTextColor.WHITE;
         }
 
         Component nameComponent = Component.text("[/me] " + playerNameString).color(nameColor);
@@ -114,10 +111,9 @@ public class CommandMe extends CommandBase {
         }
         nameComponent = nameComponent.hoverEvent(HoverEvent.showText(MiniMessage.miniMessage().deserialize(hoverText)));
 
-        Component colonComponent = Component.text(": ").color(NamedTextColor.GRAY);
-        Component textComponent = Component.text(message).color(messageColor);
+        Component colonComponent = Component.text(": " + message).color(NamedTextColor.GRAY);
 
-        return List.of(nameComponent, colonComponent, textComponent).stream().collect(Component.toComponent());
+        return List.of(nameComponent, colonComponent).stream().collect(Component.toComponent());
     }
 
     private static @NotNull TextColor coordsToRGB(int x, int z) {
