@@ -21,14 +21,22 @@ import net.sneakymouse.slashme.types.MeEntity;
 
 public class CommandMe extends CommandBase {
 
-    public CommandMe() {
-        super("me");
+    protected CommandMe() {
+        this("me");
+    }
+
+    protected CommandMe(@NotNull String name) {
+        super(name);
         this.usageMessage = "/" + this.getName() + " [Message]";
         this.description = "Describe your actions in a holographic message on your body.";
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+        return handle(sender, commandLabel, args, 120);
+    }
+
+    protected boolean handle(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args, int duration) {
         if(!(sender instanceof Player player)) return false;
 
         if(args.length == 0) {
@@ -47,7 +55,7 @@ public class CommandMe extends CommandBase {
 
             Bukkit.getServer().getScheduler().runTaskLater(SlashMe.getInstance(), () -> {
                 if (chatBubble.removeMessage(0)) SlashMe.getInstance().removePlayer(player, chatBubble);
-            }, Math.max(message.length()*2, 120));
+            }, Math.max(message.length()*2, duration));
         } else{
             MeEntity chatBubble = SlashMe.getInstance().playerChatBubbles.get(player);
 
@@ -55,7 +63,7 @@ public class CommandMe extends CommandBase {
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SlashMe.getInstance(), ()->{
                 if (chatBubble.removeMessage(messageID)) SlashMe.getInstance().removePlayer(player, chatBubble);
-            }, Math.max(message.length()*2, 120));
+            }, duration);
         }
 
         meSpy(player, message);
@@ -63,7 +71,7 @@ public class CommandMe extends CommandBase {
         return true;
     }
 
-    private void meSpy(Player player, String message){
+    private static void meSpy(Player player, String message){
         String escapeTags = MiniMessage.miniMessage().escapeTags(message);
 
         double meSpyNearRadiusSq = Math.pow(SlashMe.getInstance().getConfig().getInt("meSpyNearRadius", 12), 2);
