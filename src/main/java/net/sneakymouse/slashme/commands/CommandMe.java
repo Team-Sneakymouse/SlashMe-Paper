@@ -21,7 +21,7 @@ import net.sneakymouse.slashme.types.MeEntity;
 
 public class CommandMe extends CommandBase {
 
-    protected CommandMe() {
+    public CommandMe() {
         this("me");
     }
 

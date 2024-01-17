@@ -30,6 +30,7 @@ public class SlashMe extends JavaPlugin {
 		saveDefaultConfig();
 
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMe());
+		getServer().getCommandMap().register(IDENTIFIER, new CommandMee());
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMeSpy());
 
 		getServer().getPluginManager().addPermission(new Permission(IDENTIFIER + ".admin"));
