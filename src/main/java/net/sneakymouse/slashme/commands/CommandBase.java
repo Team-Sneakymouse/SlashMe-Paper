@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import net.sneakymouse.slashme.SlashMe;
 
-public class CommandBase extends Command {
+public abstract class CommandBase extends Command {
 
     protected CommandBase(@NotNull String name) {
         super(name);
@@ -14,6 +14,6 @@ public class CommandBase extends Command {
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {return false;}
+    public abstract boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args);
     
 }
