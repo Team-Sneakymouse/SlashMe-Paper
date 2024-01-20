@@ -109,10 +109,11 @@ public class CommandMe extends CommandBase {
 
         String hoverText = "<yellow>Account name: <gold>" + ((TextComponent) player.displayName()).content();
 
+        if (SlashMe.getInstance().papiActive) {
+            hoverText += PlaceholderAPI.setPlaceholders(player, "\n<yellow>Voicechat: %cond_voicechat-status%");
+        }
+
         if (global) {
-            if (SlashMe.getInstance().papiActive) {
-                hoverText += PlaceholderAPI.setPlaceholders(player, "\n<yellow>Voicechat: %cond_voicechat-status%");
-            }
             hoverText += "\n<reset>Teleport to player";
 
             nameComponent = nameComponent.clickEvent(ClickEvent.runCommand("/minecraft:tp " + player.getName()));
