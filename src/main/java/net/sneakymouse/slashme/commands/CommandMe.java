@@ -18,6 +18,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.util.HSVLike;
 import net.sneakymouse.slashme.SlashMe;
 import net.sneakymouse.slashme.types.MeEntity;
+import net.sneakymouse.slashme.utils.MessageUtil;
 
 public class CommandMe extends CommandBase {
 
@@ -118,7 +119,7 @@ public class CommandMe extends CommandBase {
 
             nameComponent = nameComponent.clickEvent(ClickEvent.runCommand("/minecraft:tp " + player.getName()));
         }
-        nameComponent = nameComponent.hoverEvent(HoverEvent.showText(MiniMessage.miniMessage().deserialize(hoverText)));
+        nameComponent = nameComponent.hoverEvent(HoverEvent.showText(MiniMessage.miniMessage().deserialize(MessageUtil.replaceFormatCodes(hoverText))));
 
         Component colonComponent = Component.text(": " + message).color(NamedTextColor.GRAY);
 
