@@ -2,7 +2,9 @@ package net.sneakymouse.slashme.utils;
 
 public class MessageUtil {
 
-    public static String replaceFormatCodes(String message) {        
+    public static String replaceFormatCodes(String message) {       
+        message = message.replaceAll("\\x{00A7}", "&");
+        
         message = message.replace("&1", "<dark_blue>");
         message = message.replace("&2", "<dark_green>");
         message = message.replace("&3", "<dark_aqua>");
