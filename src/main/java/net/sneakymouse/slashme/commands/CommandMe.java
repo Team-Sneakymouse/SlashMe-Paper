@@ -83,7 +83,7 @@ public class CommandMe extends CommandBase {
         for(Player pl : Bukkit.getOnlinePlayers()){
             if (player.equals(pl) && !pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.none")) {
                 pl.sendMessage(defaultComponent);
-            } else if ((pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.near") || (pl.hasPermission(SlashMe.IDENTIFIER + ".admin") && pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.global"))) && player.getLocation().distanceSquared(pl.getLocation()) < meSpyNearRadiusSq) {
+            } else if ((pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.near") || (pl.hasPermission(SlashMe.IDENTIFIER + ".admin") && pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.global"))) && (player.getLocation().getWorld().equals(pl.getLocation().getWorld()) && player.getLocation().distanceSquared(pl.getLocation()) < meSpyNearRadiusSq)) {
                 pl.sendMessage(defaultComponent);
             } else if (pl.hasPermission(SlashMe.IDENTIFIER + ".admin") && pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.global")) {
                 pl.sendMessage(globalComponent);
