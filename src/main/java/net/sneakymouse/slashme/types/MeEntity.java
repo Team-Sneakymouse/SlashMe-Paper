@@ -94,7 +94,7 @@ public class MeEntity {
 
         if (message == null) return null;
 
-        return MiniMessage.miniMessage().deserialize(MiniMessage.miniMessage().escapeTags(message));
+        return MiniMessage.miniMessage().deserialize(message);
     }
 
 }

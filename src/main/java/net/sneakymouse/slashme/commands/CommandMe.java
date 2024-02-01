@@ -48,6 +48,12 @@ public class CommandMe extends CommandBase {
         String message = String.join(" ", args);
         message = message.substring(0, Math.min(message.length(), 50));
 
+        if (player.hasPermission(SlashMe.IDENTIFIER + ".formatmes")) {
+            message = MessageUtil.replaceFormatCodes(message);
+        } else {
+            message = MiniMessage.miniMessage().escapeTags(message.replaceAll("\\x{00A7}", "&"));
+        }
+
         if(!SlashMe.getInstance().playerChatBubbles.containsKey(player)){
             MeEntity chatBubble = new MeEntity(player, message);
             SlashMe.getInstance().playerChatBubbles.put(player, chatBubble);
