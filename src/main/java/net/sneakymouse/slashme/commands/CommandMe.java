@@ -79,12 +79,10 @@ public class CommandMe extends CommandBase {
     }
 
     private static void meSpy(Player player, String message){
-        String escapeTags = MiniMessage.miniMessage().escapeTags(message);
-
         double meSpyNearRadiusSq = Math.pow(SlashMe.getInstance().getConfig().getInt("meSpyNearRadius", 12), 2);
         
-        Component defaultComponent = makeMeSpyComponent(player, escapeTags, false);
-        Component globalComponent = makeMeSpyComponent(player, escapeTags, true);
+        Component defaultComponent = makeMeSpyComponent(player, message, false);
+        Component globalComponent = makeMeSpyComponent(player, message, true);
 
         for(Player pl : Bukkit.getOnlinePlayers()){
             if (player.equals(pl) && !pl.hasPermission(SlashMe.IDENTIFIER + ".mespy.none")) {
