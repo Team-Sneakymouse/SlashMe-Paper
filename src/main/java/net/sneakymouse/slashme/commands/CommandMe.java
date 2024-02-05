@@ -61,7 +61,7 @@ public class CommandMe extends CommandBase {
             chatBubble.spawn();
 
             Bukkit.getServer().getScheduler().runTaskLater(SlashMe.getInstance(), () -> {
-                if (chatBubble.removeMessage(0)) SlashMe.getInstance().removePlayer(player, chatBubble);
+                if (chatBubble.removeMessage(0)) SlashMe.getInstance().removePlayer(player);
             }, Math.max(message.length()*2, duration));
         } else{
             MeEntity chatBubble = SlashMe.getInstance().playerChatBubbles.get(player);
@@ -69,7 +69,7 @@ public class CommandMe extends CommandBase {
             int messageID = chatBubble.addMessage(message);
 
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(SlashMe.getInstance(), ()->{
-                if (chatBubble.removeMessage(messageID)) SlashMe.getInstance().removePlayer(player, chatBubble);
+                if (chatBubble.removeMessage(messageID)) SlashMe.getInstance().removePlayer(player);
             }, duration);
         }
 

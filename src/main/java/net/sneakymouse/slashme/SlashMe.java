@@ -6,14 +6,18 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.sneakymouse.slashme.commands.*;
+import net.sneakymouse.slashme.commands.CommandMe;
+import net.sneakymouse.slashme.commands.CommandMeSpy;
+import net.sneakymouse.slashme.commands.CommandMee;
 import net.sneakymouse.slashme.types.MeEntity;
 
-public class SlashMe extends JavaPlugin {
+public class SlashMe extends JavaPlugin implements Listener {
 
 	public static final String IDENTIFIER = "slashme";
 
@@ -33,6 +37,8 @@ public class SlashMe extends JavaPlugin {
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMee());
 		getServer().getCommandMap().register(IDENTIFIER, new CommandMeSpy());
 
+		getServer().getPluginManager().registerEvents(this, this);
+
 		getServer().getPluginManager().addPermission(new Permission(IDENTIFIER + ".admin"));
 
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -50,12 +56,18 @@ public class SlashMe extends JavaPlugin {
 		}
     }
 
-    public void removePlayer(Player player, MeEntity chatBubble) {
-    	chatBubble.remove();
-    	playerChatBubbles.remove(player);
+	@EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        removePlayer(event.getPlayer());
+    }
+
+    public void removePlayer(Player player) {
+		MeEntity meEntity = playerChatBubbles.remove(player);
+		if (meEntity != null) meEntity.remove();
     }
 
 	public static SlashMe getInstance(){
 		return instance;
 	}
+
 }
