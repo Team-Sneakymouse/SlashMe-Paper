@@ -1,8 +1,10 @@
 package net.sneakymouse.slashme.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +37,11 @@ public class CommandMe extends CommandBase {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         return handle(sender, commandLabel, args, 120);
+    }
+
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args, Location location) {
+        return new ArrayList<>();
     }
 
     protected boolean handle(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args, int duration) {
