@@ -8,3 +8,6 @@ xMin: 4400
 xMax: 5600
 yMin: 4400
 yMax: 5600
+
+# The server name, used for grafana logging
+server_name: lom-dev

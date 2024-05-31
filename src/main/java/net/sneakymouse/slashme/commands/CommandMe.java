@@ -18,6 +18,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.kyori.adventure.util.HSVLike;
 import net.sneakymouse.slashme.SlashMe;
 import net.sneakymouse.slashme.types.MeEntity;
@@ -85,10 +86,27 @@ public class CommandMe extends CommandBase {
 			}, duration);
 		}
 
+		// Send message to MeSpy receivers
+		meSpy(player, message);
+
+		// Log message in CoreProtect
 		if (SlashMe.getInstance().coreprotectActive) {
 			CoreProtect.getInstance().getAPI().logChat(player, "\u2215me " + message);
 		}
-		meSpy(player, message);
+
+		// Log message in Loki
+		String username = SlashMe.getInstance().getConfig().getString("playerNameString", "playerName")
+				.replace("playerName", player.getName());
+
+		if (SlashMe.getInstance().papiActive) {
+			username = PlaceholderAPI.setPlaceholders(player, username);
+		}
+		var positionX = player.getLocation().getX();
+		var positionY = player.getLocation().getY();
+		var positionZ = player.getLocation().getZ();
+		SlashMe.getInstance().lokiChatStream.log(
+				"{ \"username\": \"" + username + "\", \"positionX\": " + positionX + ", \"positionY\": " + positionY
+						+ ", \"positionZ\": " + positionZ + ", \"message\": \"" + "/me " + message + "\" }");
 
 		return true;
 	}
