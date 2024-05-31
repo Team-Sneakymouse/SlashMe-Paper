@@ -57,7 +57,7 @@ public class SlashMe extends JavaPlugin implements Listener {
 
 		this.lokiLogger = TinyLoki.withUrl("http://grafana-loki:3100/loki/api/v1/push").start();
 		this.lokiChatStream = this.lokiLogger.createStream(
-				TinyLoki.l("type", "chat")
+				TinyLoki.l("type", "slashme")
 						.l("server", this.getConfig().getString("server_name", "lom-dev")));
 	}
 
