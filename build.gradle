@@ -20,6 +20,10 @@ repositories {
         name = "papermc"
         url = uri("https://repo.papermc.io/repository/maven-public/")
     }
+    maven {
+        name = "playpro-repo"
+        url = uri("https://maven.playpro.com")
+    }
 }
 
 dependencies {
@@ -27,7 +31,8 @@ dependencies {
     annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
     implementation(group: "io.papermc.paper", name: "paper-api", version: "1.20.6-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.5")
-    compileOnly 'net.luckperms:api:5.4'
+    compileOnly("net.luckperms:api:5.4")
+    compileOnly("net.coreprotect:coreprotect:22.4")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

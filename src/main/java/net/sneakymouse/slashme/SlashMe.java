@@ -12,6 +12,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.coreprotect.CoreProtect;
 import net.sneakymouse.slashme.commands.CommandMe;
 import net.sneakymouse.slashme.commands.CommandMeSpy;
 import net.sneakymouse.slashme.commands.CommandMee;
@@ -24,6 +25,7 @@ public class SlashMe extends JavaPlugin implements Listener {
 	private static SlashMe instance;
 	
 	public boolean papiActive = false;
+	public boolean coreprotectActive = false;
 
 	public Map<Player, MeEntity> playerChatBubbles = new HashMap<>();
 
@@ -43,6 +45,9 @@ public class SlashMe extends JavaPlugin implements Listener {
 
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			papiActive = true;
+        }
+		if (Bukkit.getPluginManager().getPlugin("CoreProtect") != null) {
+			coreprotectActive = CoreProtect.getInstance().getAPI().isEnabled();
         }
     }
 
