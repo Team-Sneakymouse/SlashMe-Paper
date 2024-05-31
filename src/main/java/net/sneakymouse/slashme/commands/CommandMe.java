@@ -95,18 +95,25 @@ public class CommandMe extends CommandBase {
 		}
 
 		// Log message in Loki
-		String username = SlashMe.getInstance().getConfig().getString("playerNameString", "playerName")
-				.replace("playerName", player.getName());
-
+		String character = player.getName();
 		if (SlashMe.getInstance().papiActive) {
-			username = PlaceholderAPI.setPlaceholders(player, username);
+			character = PlaceholderAPI.setPlaceholders(player, "%sneakycharacters_character_name%")
+					.replace("\"", "\\\"");
 		}
-		var positionX = player.getLocation().getX();
-		var positionY = player.getLocation().getY();
-		var positionZ = player.getLocation().getZ();
+		if (character.equals("%sneakycharacters_character_name%"))
+			character = "";
+
+		String username = player.getName();
+		Double positionX = player.getLocation().getX();
+		Double positionY = player.getLocation().getY();
+		Double positionZ = player.getLocation().getZ();
+		String sanitisedMessage = message
+				.replace("\\", "\\\\")
+				.replace("\"", "\\\"");
 		SlashMe.getInstance().lokiChatStream.log(
-				"{ \"username\": \"" + username + "\", \"positionX\": " + positionX + ", \"positionY\": " + positionY
-						+ ", \"positionZ\": " + positionZ + ", \"message\": \"" + "/me " + message + "\" }");
+				"{ \"character\": \"" + character + "\", \"username\": \"" + username + "\", \"position\": { \"x\": "
+						+ positionX + ", \"y\": " + positionY + ", \"z\": " + positionZ + " }, \"message\": \""
+						+ sanitisedMessage + "\" }");
 
 		return true;
 	}
