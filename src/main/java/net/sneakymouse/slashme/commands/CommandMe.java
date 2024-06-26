@@ -86,7 +86,7 @@ public class CommandMe extends CommandBase {
 		}
 
 		// Send message to MeSpy receivers
-		meSpy(player, message);
+		if (!player.hasPermission(SlashMe.IDENTIFIER + ".hidespy")) meSpy(player, message);
 
 		// Log message in CoreProtect
 		if (SlashMe.getInstance().coreprotectActive) {
