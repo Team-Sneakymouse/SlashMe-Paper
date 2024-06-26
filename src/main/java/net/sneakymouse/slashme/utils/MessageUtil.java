@@ -2,9 +2,9 @@ package net.sneakymouse.slashme.utils;
 
 public class MessageUtil {
 
-    public static String replaceFormatCodes(String message) {       
+    public static String replaceFormatCodes(String message) {
         message = message.replaceAll("\\x{00A7}", "&");
-        
+
         message = message.replace("&1", "<dark_blue>");
         message = message.replace("&2", "<dark_green>");
         message = message.replace("&3", "<dark_aqua>");
@@ -29,7 +29,6 @@ public class MessageUtil {
         message = message.replace("&f", "<white>");
         message = message.replace("&F", "<white>");
 
-
         message = message.replace("&k", "<obf>");
         message = message.replace("&K", "<obf>");
         message = message.replace("&l", "<b>");
@@ -45,6 +44,34 @@ public class MessageUtil {
 
         message = message.replace("&r", "<reset>");
         message = message.replace("&R", "<reset>");
+
+        return message;
+    }
+
+    public static String removeFormatCodes(String message) {
+        message = message.replace("<dark_blue>", "");
+        message = message.replace("<dark_green>", "");
+        message = message.replace("<dark_aqua>", "");
+        message = message.replace("<dark_red>", "");
+        message = message.replace("<dark_purple>", "");
+        message = message.replace("<gold>", "");
+        message = message.replace("<gray>", "");
+        message = message.replace("<dark_gray>", "");
+        message = message.replace("<blue>", "");
+        message = message.replace("<black>", "");
+
+        message = message.replace("<green>", "");
+        message = message.replace("<aqua>", "");
+        message = message.replace("<red>", "");
+        message = message.replace("<light_purple>", "");
+        message = message.replace("<yellow>", "");
+        message = message.replace("<white>", "");
+
+        message = message.replace("<obf>", "");
+        message = message.replace("<b>", "");
+        message = message.replace("<st>", "");
+        message = message.replace("<u>", "");
+        message = message.replace("<i>", "");
 
         return message;
     }

@@ -171,7 +171,7 @@ public class CommandMe extends CommandBase {
 		nameComponent = nameComponent.hoverEvent(
 				HoverEvent.showText(MiniMessage.miniMessage().deserialize(MessageUtil.replaceFormatCodes(hoverText))));
 
-		Component colonComponent = Component.text(": " + message).color(NamedTextColor.GRAY);
+		Component colonComponent = Component.text(": " + MessageUtil.removeFormatCodes(message)).color(NamedTextColor.GRAY);
 
 		return List.of(nameComponent, colonComponent).stream().collect(Component.toComponent());
 	}
