@@ -86,34 +86,36 @@ public class CommandMe extends CommandBase {
 		}
 
 		// Send message to MeSpy receivers
-		if (!player.hasPermission(SlashMe.IDENTIFIER + ".hidespy")) meSpy(player, message);
+		if (!player.hasPermission(SlashMe.IDENTIFIER + ".hidespy")) {
+			meSpy(player, message);
 
-		// Log message in CoreProtect
-		if (SlashMe.getInstance().coreprotectActive) {
-			CoreProtect.getInstance().getAPI().logChat(player, "\u2215me " + message);
-		}
+			// Log message in CoreProtect
+			if (SlashMe.getInstance().coreprotectActive) {
+				CoreProtect.getInstance().getAPI().logChat(player, "\u2215me " + message);
+			}
 
-		// Log message in Loki
-		String character = player.getName();
-		if (SlashMe.getInstance().papiActive) {
-			character = PlaceholderAPI.setPlaceholders(player, "%sneakycharacters_character_name%")
+			// Log message in Loki
+			String character = player.getName();
+			if (SlashMe.getInstance().papiActive) {
+				character = PlaceholderAPI.setPlaceholders(player, "%sneakycharacters_character_name%")
+						.replace("\"", "\\\"");
+			}
+			if (character.equals("%sneakycharacters_character_name%"))
+				character = "";
+
+			String username = player.getName();
+			Double positionX = player.getLocation().getX();
+			Double positionY = player.getLocation().getY();
+			Double positionZ = player.getLocation().getZ();
+			String sanitisedMessage = message
+					.replace("\\", "\\\\")
 					.replace("\"", "\\\"");
+			SlashMe.getInstance().lokiChatStream.log(
+					"{ \"character\": \"" + character + "\", \"username\": \"" + username
+							+ "\", \"position\": { \"x\": "
+							+ positionX + ", \"y\": " + positionY + ", \"z\": " + positionZ + " }, \"message\": \""
+							+ sanitisedMessage + "\" }");
 		}
-		if (character.equals("%sneakycharacters_character_name%"))
-			character = "";
-
-		String username = player.getName();
-		Double positionX = player.getLocation().getX();
-		Double positionY = player.getLocation().getY();
-		Double positionZ = player.getLocation().getZ();
-		String sanitisedMessage = message
-				.replace("\\", "\\\\")
-				.replace("\"", "\\\"");
-		SlashMe.getInstance().lokiChatStream.log(
-				"{ \"character\": \"" + character + "\", \"username\": \"" + username + "\", \"position\": { \"x\": "
-						+ positionX + ", \"y\": " + positionY + ", \"z\": " + positionZ + " }, \"message\": \""
-						+ sanitisedMessage + "\" }");
-
 		return true;
 	}
 
@@ -171,7 +173,8 @@ public class CommandMe extends CommandBase {
 		nameComponent = nameComponent.hoverEvent(
 				HoverEvent.showText(MiniMessage.miniMessage().deserialize(MessageUtil.replaceFormatCodes(hoverText))));
 
-		Component colonComponent = Component.text(": " + MessageUtil.removeFormatCodes(message)).color(NamedTextColor.GRAY);
+		Component colonComponent = Component.text(": " + MessageUtil.removeFormatCodes(message))
+				.color(NamedTextColor.GRAY);
 
 		return List.of(nameComponent, colonComponent).stream().collect(Component.toComponent());
 	}
