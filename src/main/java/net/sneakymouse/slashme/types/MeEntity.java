@@ -3,8 +3,10 @@ package net.sneakymouse.slashme.types;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -37,7 +39,10 @@ public class MeEntity {
         this.display.setLineWidth(150);
         this.display.setShadowed(true);
         this.display.setBrightness(new Display.Brightness(15, 15));
-        this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F,0.5F), new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
+
+        double playerScale = Objects.requireNonNull(this.player.getAttribute(Attribute.GENERIC_SCALE)).getValue();
+        this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F*(float)playerScale,0.5F*(float)playerScale),
+                new AxisAngle4f(), new Vector3f((float)playerScale), new AxisAngle4f()));
 
         this.display.addScoreboardTag("MeEntity");
 
