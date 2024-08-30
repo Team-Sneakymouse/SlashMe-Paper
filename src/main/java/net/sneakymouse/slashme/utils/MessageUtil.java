@@ -73,6 +73,8 @@ public class MessageUtil {
         message = message.replace("<u>", "");
         message = message.replace("<i>", "");
 
+        message = message.replace("<reset>", "");
+
         return message;
     }
 
