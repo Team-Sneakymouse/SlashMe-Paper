@@ -1,7 +1,9 @@
 package net.sneakymouse.slashme.commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +26,8 @@ import net.sneakymouse.slashme.types.MeEntity;
 import net.sneakymouse.slashme.utils.MessageUtil;
 
 public class CommandMe extends CommandBase {
+
+	private static Map<Player, String> spyHistory = new HashMap<>();
 
 	public CommandMe() {
 		this("me");
@@ -87,6 +91,11 @@ public class CommandMe extends CommandBase {
 
 		// Send message to MeSpy receivers
 		if (!player.hasPermission(SlashMe.IDENTIFIER + ".hidespy")) {
+			String lastMe = spyHistory.get(player);
+
+			if (lastMe != null && lastMe.equals(message)) return true;
+
+			spyHistory.put(player, message);
 			meSpy(player, message);
 
 			// Log message in CoreProtect
