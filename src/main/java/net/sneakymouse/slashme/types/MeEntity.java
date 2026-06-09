@@ -3,12 +3,12 @@ package net.sneakymouse.slashme.types;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
@@ -21,20 +21,20 @@ public class MeEntity {
 
     private static final String RESET_PREFIX = "<reset>";
 
-    private final Player player;
+    private final LivingEntity entity;
     private final List<String> messages;
     private TextDisplay display = null;
 
-    public MeEntity(Player player, String message) {
-        this.player = player;
+    public MeEntity(LivingEntity entity, String message) {
+        this.entity = entity;
         messages = new ArrayList<>(Collections.singletonList(withResetPrefix(message)));
     }
 
     public void spawn() {
-        Location location = this.player.getLocation().clone();
-        location.setY(location.getY() + this.player.getEyeHeight() * 0.85);
+        Location location = this.entity.getLocation().clone();
+        location.setY(location.getY() + this.entity.getEyeHeight() * 0.85);
 
-        this.display = this.player.getWorld().spawn(location, TextDisplay.class);
+        this.display = this.entity.getWorld().spawn(location, TextDisplay.class);
         this.display.text(this.makeMessage());
 
         this.display.setBillboard(Display.Billboard.CENTER);
@@ -42,13 +42,19 @@ public class MeEntity {
         this.display.setShadowed(true);
         this.display.setBrightness(new Display.Brightness(15, 15));
 
-        double playerScale = Objects.requireNonNull(this.player.getAttribute(Attribute.SCALE)).getValue();
-        this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F*(float)playerScale,0.5F*(float)playerScale),
-                new AxisAngle4f(), new Vector3f((float)playerScale), new AxisAngle4f()));
+        double entityScale = 1.0;
+        AttributeInstance scaleAttribute = this.entity.getAttribute(Attribute.SCALE);
+        if (scaleAttribute != null) {
+            entityScale = scaleAttribute.getValue();
+        }
+
+        this.display.setTransformation(new Transformation(
+                new Vector3f(0F, -0.6F * (float) entityScale, 0.5F * (float) entityScale),
+                new AxisAngle4f(), new Vector3f((float) entityScale), new AxisAngle4f()));
 
         this.display.addScoreboardTag("MeEntity");
 
-        this.player.addPassenger(this.display);
+        this.entity.addPassenger(this.display);
     }
 
     public void remove() {
@@ -89,7 +95,7 @@ public class MeEntity {
     private Component makeMessage() {
         String message = null;
 
-        for (int i = 0; i < this.messages.size(); i ++) {
+        for (int i = 0; i < this.messages.size(); i++) {
             if (this.messages.get(i) != null) {
                 if (message == null) {
                     message = this.messages.get(i);
@@ -99,7 +105,8 @@ public class MeEntity {
             }
         }
 
-        if (message == null) return null;
+        if (message == null)
+            return null;
 
         return MiniMessage.miniMessage().deserialize(message);
     }

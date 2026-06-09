@@ -2,19 +2,20 @@ package net.sneakymouse.slashme;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.coreprotect.CoreProtect;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.sneakymouse.slashme.commands.SlashMeCommands;
 import net.sneakymouse.slashme.types.MeEntity;
 import pl.mjaron.tinyloki.ILogStream;
 import pl.mjaron.tinyloki.LogController;
@@ -31,16 +32,13 @@ public class SlashMe extends JavaPlugin implements Listener {
 	public boolean papiActive = false;
 	public boolean coreprotectActive = false;
 
-	public Map<Player, MeEntity> playerChatBubbles = new HashMap<>();
+	public Map<UUID, MeEntity> entityChatBubbles = new HashMap<>();
 
 	@Override
 	public void onEnable() {
 		instance = this;
 
 		saveDefaultConfig();
-
-		getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-				event -> SlashMeCommands.register(event.registrar()));
 
 		getServer().getPluginManager().registerEvents(this, this);
 
@@ -62,21 +60,28 @@ public class SlashMe extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event) {
 		if (event.getPlugin() == this) {
-			for (MeEntity chatBubble : playerChatBubbles.values()) {
+			for (MeEntity chatBubble : entityChatBubbles.values()) {
 				chatBubble.remove();
 			}
-			playerChatBubbles.clear();
+			entityChatBubbles.clear();
 			lokiLogger.softStop().hardStop();
 		}
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		removePlayer(event.getPlayer());
+		removeEntity(event.getPlayer());
 	}
 
-	public void removePlayer(Player player) {
-		MeEntity meEntity = playerChatBubbles.remove(player);
+	@EventHandler
+	public void onEntityRemove(EntityRemoveEvent event) {
+		if (event.getEntity() instanceof LivingEntity living) {
+			removeEntity(living);
+		}
+	}
+
+	public void removeEntity(LivingEntity entity) {
+		MeEntity meEntity = entityChatBubbles.remove(entity.getUniqueId());
 		if (meEntity != null)
 			meEntity.remove();
 	}
