@@ -1,13 +1,10 @@
 package net.sneakymouse.slashme.commands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,41 +22,14 @@ import net.sneakymouse.slashme.SlashMe;
 import net.sneakymouse.slashme.types.MeEntity;
 import net.sneakymouse.slashme.utils.MessageUtil;
 
-public class CommandMe extends CommandBase {
+public final class MeHandler {
 
-	private static Map<Player, String> spyHistory = new HashMap<>();
+	private static final Map<Player, String> spyHistory = new HashMap<>();
 
-	public CommandMe() {
-		this("me");
+	private MeHandler() {
 	}
 
-	protected CommandMe(@NotNull String name) {
-		super(name);
-		this.usageMessage = "/" + this.getName() + " [Message]";
-		this.description = "Describe your actions in a holographic message on your body.";
-	}
-
-	@Override
-	public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-		return handle(sender, commandLabel, args, 120);
-	}
-
-	@Override
-	public List<String> tabComplete(CommandSender sender, String alias, String[] args, Location location) {
-		return new ArrayList<>();
-	}
-
-	protected boolean handle(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args,
-			int duration) {
-		if (!(sender instanceof Player player))
-			return false;
-
-		if (args.length == 0) {
-			player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Invalid Usage: " + this.usageMessage));
-			return false;
-		}
-
-		String message = String.join(" ", args);
+	public static void execute(@NotNull Player player, @NotNull String message, int duration) {
 		message = message.substring(0, Math.min(message.length(), 50));
 
 		if (player.hasPermission(SlashMe.IDENTIFIER + ".formatmes")) {
@@ -89,21 +59,19 @@ public class CommandMe extends CommandBase {
 			}, duration);
 		}
 
-		// Send message to MeSpy receivers
 		if (!player.hasPermission(SlashMe.IDENTIFIER + ".hidespy")) {
 			String lastMe = spyHistory.get(player);
 
-			if (lastMe != null && lastMe.equals(message)) return true;
+			if (lastMe != null && lastMe.equals(message))
+				return;
 
 			spyHistory.put(player, message);
 			meSpy(player, message);
 
-			// Log message in CoreProtect
 			if (SlashMe.getInstance().coreprotectActive) {
 				CoreProtect.getInstance().getAPI().logChat(player, "\u2215me " + message);
 			}
 
-			// Log message in Loki
 			String character = player.getName();
 			if (SlashMe.getInstance().papiActive) {
 				character = PlaceholderAPI.setPlaceholders(player, "%sneakycharacters_character_name%")
@@ -125,7 +93,6 @@ public class CommandMe extends CommandBase {
 							+ positionX + ", \"y\": " + positionY + ", \"z\": " + positionZ + " }, \"message\": \""
 							+ sanitisedMessage + "\" }");
 		}
-		return true;
 	}
 
 	private static void meSpy(Player player, String message) {

@@ -13,9 +13,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.coreprotect.CoreProtect;
-import net.sneakymouse.slashme.commands.CommandMe;
-import net.sneakymouse.slashme.commands.CommandMeSpy;
-import net.sneakymouse.slashme.commands.CommandMee;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.sneakymouse.slashme.commands.SlashMeCommands;
 import net.sneakymouse.slashme.types.MeEntity;
 import pl.mjaron.tinyloki.ILogStream;
 import pl.mjaron.tinyloki.LogController;
@@ -40,9 +39,8 @@ public class SlashMe extends JavaPlugin implements Listener {
 
 		saveDefaultConfig();
 
-		getServer().getCommandMap().register(IDENTIFIER, new CommandMe());
-		getServer().getCommandMap().register(IDENTIFIER, new CommandMee());
-		getServer().getCommandMap().register(IDENTIFIER, new CommandMeSpy());
+		getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+				event -> SlashMeCommands.register(event.registrar()));
 
 		getServer().getPluginManager().registerEvents(this, this);
 
