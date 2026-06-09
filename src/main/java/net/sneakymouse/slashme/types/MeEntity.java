@@ -19,13 +19,15 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class MeEntity {
 
+    private static final String RESET_PREFIX = "<reset>";
+
     private final Player player;
     private final List<String> messages;
     private TextDisplay display = null;
 
     public MeEntity(Player player, String message) {
         this.player = player;
-        messages = new ArrayList<>(Collections.singletonList(message));
+        messages = new ArrayList<>(Collections.singletonList(withResetPrefix(message)));
     }
 
     public void spawn() {
@@ -58,7 +60,7 @@ public class MeEntity {
     public int addMessage(String message) {
         int messageId = this.messages.size();
 
-        this.messages.add(message);
+        this.messages.add(withResetPrefix(message));
         this.display.text(this.makeMessage());
 
         return messageId;
@@ -100,6 +102,10 @@ public class MeEntity {
         if (message == null) return null;
 
         return MiniMessage.miniMessage().deserialize(message);
+    }
+
+    private static String withResetPrefix(String message) {
+        return RESET_PREFIX + message;
     }
 
 }
