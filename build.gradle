@@ -7,10 +7,9 @@
  */
 
 plugins {
-    // Apply the java-library plugin for API and implementation separation.
-    id 'java-library'
-	id 'xyz.jpenilla.run-paper' version "2.2.0"
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+	id 'java-library'
+	id 'xyz.jpenilla.run-paper' version '3.0.2'
+	id 'com.gradleup.shadow' version '8.3.6'
 }
 
 repositories {
@@ -30,7 +29,7 @@ repositories {
 dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
     annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
-    implementation(group: "io.papermc.paper", name: "paper-api", version: "1.20.6-R0.1-SNAPSHOT")
+    implementation(group: "io.papermc.paper", name: "paper-api", version: "1.21.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.5")
     compileOnly("net.luckperms:api:5.4")
     compileOnly("net.coreprotect:coreprotect:22.4")
@@ -51,7 +50,7 @@ tasks.named('test') {
 
 tasks {
 	runServer {
-		minecraftVersion("1.20.6")
+		minecraftVersion("1.21.4")
 	}
 }
 

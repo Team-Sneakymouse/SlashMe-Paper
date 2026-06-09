@@ -40,7 +40,7 @@ public class MeEntity {
         this.display.setShadowed(true);
         this.display.setBrightness(new Display.Brightness(15, 15));
 
-        double playerScale = Objects.requireNonNull(this.player.getAttribute(Attribute.GENERIC_SCALE)).getValue();
+        double playerScale = Objects.requireNonNull(this.player.getAttribute(Attribute.SCALE)).getValue();
         this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F*(float)playerScale,0.5F*(float)playerScale),
                 new AxisAngle4f(), new Vector3f((float)playerScale), new AxisAngle4f()));
 

@@ -4,7 +4,7 @@ main: net.sneakymouse.slashme.SlashMe
 description: A plugin for Minecraft Paper that allowes users to express their /me messages on their characters bodies by using TextDisplay entities
 authors: [Team Sneakymouse, Momo the Bard, Bungo]
 website: https://github.com/Team-Sneakymouse/SlashMe-Paper
-api-version: "1.19"
+api-version: "1.21"
 
 dependencies:
   server:
