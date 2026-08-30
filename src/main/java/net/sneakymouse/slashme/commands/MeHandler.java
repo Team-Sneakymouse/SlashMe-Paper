@@ -88,29 +88,6 @@ public final class MeHandler {
 				CoreProtect.getInstance().getAPI().logChat(executor, logMessage);
 			}
 
-			String character = executor.getName();
-			if (SlashMe.getInstance().papiActive) {
-				character = PlaceholderAPI.setPlaceholders(executor, "%sneakycharacters_character_name%")
-						.replace("\"", "\\\"");
-			}
-			if (character.equals("%sneakycharacters_character_name%"))
-				character = "";
-
-			String username = executor.getName();
-			String targetName = target.getName();
-			Location location = target.getLocation();
-			Double positionX = location.getX();
-			Double positionY = location.getY();
-			Double positionZ = location.getZ();
-			String sanitisedMessage = message
-					.replace("\\", "\\\\")
-					.replace("\"", "\\\"");
-			SlashMe.getInstance().lokiChatStream.log(
-					"{ \"character\": \"" + character + "\", \"username\": \"" + username
-							+ "\", \"target\": \"" + targetName.replace("\"", "\\\"")
-							+ "\", \"position\": { \"x\": "
-							+ positionX + ", \"y\": " + positionY + ", \"z\": " + positionZ + " }, \"message\": \""
-							+ sanitisedMessage + "\" }");
 		}
 	}
 

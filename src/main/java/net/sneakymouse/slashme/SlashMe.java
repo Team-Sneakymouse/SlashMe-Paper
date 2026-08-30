@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRemoveEvent;
@@ -17,17 +16,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.coreprotect.CoreProtect;
 import net.sneakymouse.slashme.types.MeEntity;
-import pl.mjaron.tinyloki.ILogStream;
-import pl.mjaron.tinyloki.LogController;
-import pl.mjaron.tinyloki.TinyLoki;
 
 public class SlashMe extends JavaPlugin implements Listener {
 
 	public static final String IDENTIFIER = "slashme";
 
 	private static SlashMe instance;
-	private LogController lokiLogger;
-	public ILogStream lokiChatStream;
 
 	public boolean papiActive = false;
 	public boolean coreprotectActive = false;
@@ -51,10 +45,6 @@ public class SlashMe extends JavaPlugin implements Listener {
 			coreprotectActive = CoreProtect.getInstance().getAPI().isEnabled();
 		}
 
-		this.lokiLogger = TinyLoki.withUrl("http://grafana-loki:3100/loki/api/v1/push").start();
-		this.lokiChatStream = this.lokiLogger.createStream(
-				TinyLoki.l("type", "slashme")
-						.l("server", this.getConfig().getString("server_name", "lom-dev")));
 	}
 
 	@EventHandler
@@ -64,7 +54,6 @@ public class SlashMe extends JavaPlugin implements Listener {
 				chatBubble.remove();
 			}
 			entityChatBubbles.clear();
-			lokiLogger.softStop().hardStop();
 		}
 	}
 
