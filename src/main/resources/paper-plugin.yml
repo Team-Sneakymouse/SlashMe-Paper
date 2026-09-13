@@ -5,7 +5,7 @@ bootstrapper: net.sneakymouse.slashme.SlashMeBootstrap
 description: A plugin for Minecraft Paper that allowes users to express their /me messages on their characters bodies by using TextDisplay entities
 authors: [Team Sneakymouse, Momo the Bard, Bungo]
 website: https://github.com/Team-Sneakymouse/SlashMe-Paper
-api-version: "1.21"
+api-version: "26.2"
 
 dependencies:
   server:

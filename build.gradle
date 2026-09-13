@@ -29,7 +29,7 @@ repositories {
 dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
     annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
-    implementation(group: "io.papermc.paper", name: "paper-api", version: "1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
     compileOnly("me.clip:placeholderapi:2.11.5")
     compileOnly("net.luckperms:api:5.4")
     compileOnly("net.coreprotect:coreprotect:22.4")
@@ -38,7 +38,7 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -49,7 +49,7 @@ tasks.named('test') {
 
 tasks {
 	runServer {
-		minecraftVersion("1.21.4")
+		minecraftVersion("26.2")
 	}
 }
 
