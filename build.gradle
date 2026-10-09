@@ -6,57 +6,121 @@
  * User Manual available at https://docs.gradle.org/8.1-rc-3/userguide/building_java_projects.html
  */
 
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
 plugins {
 	id 'java-library'
 	id 'xyz.jpenilla.run-paper' version '3.0.2'
 	id 'com.gradleup.shadow' version '8.3.6'
+	id 'maven-publish'
 }
 
+group = 'io.github.team-sneakymouse'
+
+version = providers.exec {
+	workingDir = rootDir
+	commandLine 'git', 'show', '-s', '--format=%ct:%h', '--abbrev=12', 'HEAD'
+}.standardOutput.asText.map { commit ->
+	def (timestamp, hash) = commit.trim().split(':', 2)
+	def date = DateTimeFormatter.ofPattern('yyyy.MM.dd').withZone(ZoneOffset.UTC)
+		.format(Instant.ofEpochSecond(timestamp as long))
+	"${date}-${hash}"
+}.get()
+
 repositories {
-    maven {
-        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    }
-    maven {
-        name = "papermc"
-        url = uri("https://repo.papermc.io/repository/maven-public/")
-    }
-    maven {
-        name = "playpro-repo"
-        url = uri("https://maven.playpro.com")
-    }
+	mavenCentral()
+	maven {
+		url = uri('https://repo.extendedclip.com/content/repositories/placeholderapi/')
+	}
+	maven {
+		name = 'papermc'
+		url = uri('https://repo.papermc.io/repository/maven-public/')
+	}
+	maven {
+		name = 'playpro-repo'
+		url = uri('https://maven.playpro.com')
+	}
 }
 
 dependencies {
-    compileOnly("com.velocitypowered:velocity-api:3.1.1")
-    annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
-    compileOnly("io.papermc.paper:paper-api:26.2.build.+")
-    compileOnly("me.clip:placeholderapi:2.11.5")
-    compileOnly("net.luckperms:api:5.4")
-    compileOnly("net.coreprotect:coreprotect:22.4")
+	compileOnly('com.velocitypowered:velocity-api:3.1.1')
+	annotationProcessor('com.velocitypowered:velocity-api:3.1.1')
+	compileOnly('io.papermc.paper:paper-api:26.2.build.+')
+	compileOnly('me.clip:placeholderapi:2.11.5')
+	compileOnly('net.luckperms:api:5.4')
+	compileOnly('net.coreprotect:coreprotect:22.4')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
-    }
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
 }
 
 tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+	// Use JUnit Platform for unit tests.
+	useJUnitPlatform()
 }
 
 tasks {
 	runServer {
-		minecraftVersion("26.2")
+		minecraftVersion('26.2')
+	}
+}
+
+tasks.processResources {
+	inputs.property('version', project.version.toString())
+	filesMatching('paper-plugin.yml') {
+		expand version: project.version.toString()
 	}
 }
 
 shadowJar {
-    archiveClassifier.set('')
+	archiveClassifier.set('')
+	archiveBaseName.set(rootProject.name)
+}
+
+tasks.jar {
+	enabled = false
 }
 
 tasks.build {
-    dependsOn shadowJar
+	dependsOn shadowJar
+}
+
+publishing {
+	publications {
+		create('maven', MavenPublication) {
+			artifactId = rootProject.name
+			artifact(tasks.named('shadowJar')) {
+				classifier = null
+			}
+			pom {
+				name = rootProject.name
+				description = 'Paper plugin for expressing /me messages with TextDisplay entities'
+				url = 'https://github.com/Team-Sneakymouse/SlashMe-Paper'
+				scm {
+					url = 'https://github.com/Team-Sneakymouse/SlashMe-Paper'
+					connection = 'scm:git:https://github.com/Team-Sneakymouse/SlashMe-Paper.git'
+				}
+			}
+		}
+	}
+	repositories {
+		maven {
+			name = 'sneakyrp'
+			url = uri('https://maven.sneakyrp.com/releases')
+			credentials(PasswordCredentials)
+			authentication {
+				create('basic', BasicAuthentication)
+			}
+		}
+	}
+}
+
+tasks.withType(PublishToMavenRepository).configureEach {
+	dependsOn tasks.named('check')
 }
