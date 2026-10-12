@@ -102,6 +102,7 @@ publishing {
 				name = rootProject.name
 				description = 'Paper plugin for expressing /me messages with TextDisplay entities'
 				url = 'https://github.com/Team-Sneakymouse/SlashMe-Paper'
+				properties.put('sneakyrp.deployment.type', 'paper-plugin')
 				scm {
 					url = 'https://github.com/Team-Sneakymouse/SlashMe-Paper'
 					connection = 'scm:git:https://github.com/Team-Sneakymouse/SlashMe-Paper.git'
