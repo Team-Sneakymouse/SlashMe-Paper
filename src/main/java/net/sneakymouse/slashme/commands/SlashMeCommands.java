@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.mojang.brigadier.Command;
@@ -116,14 +115,8 @@ public final class SlashMeCommands {
 			return 0;
 		}
 
-		if (!(entity instanceof LivingEntity target)) {
-			executor.sendMessage(Component.text("That entity cannot display /you messages.")
-					.color(NamedTextColor.RED));
-			return 0;
-		}
-
 		String message = StringArgumentType.getString(ctx, "message");
-		MeHandler.execute(executor, target, message, duration, commandName);
+		MeHandler.execute(executor, entity, message, duration, commandName);
 		return Command.SINGLE_SUCCESS;
 	}
 

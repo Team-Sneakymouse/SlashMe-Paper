@@ -51,6 +51,10 @@ dependencies {
 	compileOnly('me.clip:placeholderapi:2.11.5')
 	compileOnly('net.luckperms:api:5.4')
 	compileOnly('net.coreprotect:coreprotect:22.4')
+	testImplementation('io.papermc.paper:paper-api:26.2.build.+')
+	testImplementation('org.junit.jupiter:junit-jupiter:5.13.4')
+	testImplementation('org.mockito:mockito-core:5.20.0')
+	testRuntimeOnly('org.junit.platform:junit-platform-launcher')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

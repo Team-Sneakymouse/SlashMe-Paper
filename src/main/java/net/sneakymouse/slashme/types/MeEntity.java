@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.util.Transformation;
@@ -21,18 +22,19 @@ public class MeEntity {
 
     private static final String RESET_PREFIX = "<reset>";
 
-    private final LivingEntity entity;
+    private final Entity entity;
     private final List<String> messages;
     private TextDisplay display = null;
 
-    public MeEntity(LivingEntity entity, String message) {
+    public MeEntity(Entity entity, String message) {
         this.entity = entity;
         messages = new ArrayList<>(Collections.singletonList(withResetPrefix(message)));
     }
 
     public void spawn() {
         Location location = this.entity.getLocation().clone();
-        location.setY(location.getY() + this.entity.getEyeHeight() * 0.85);
+        double height = this.entity instanceof LivingEntity living ? living.getEyeHeight() : this.entity.getHeight();
+        location.setY(location.getY() + height * 0.85);
 
         this.display = this.entity.getWorld().spawn(location, TextDisplay.class);
         this.display.text(this.makeMessage());
@@ -43,9 +45,11 @@ public class MeEntity {
         this.display.setBrightness(new Display.Brightness(15, 15));
 
         double entityScale = 1.0;
-        AttributeInstance scaleAttribute = this.entity.getAttribute(Attribute.SCALE);
-        if (scaleAttribute != null) {
-            entityScale = scaleAttribute.getValue();
+        if (this.entity instanceof LivingEntity living) {
+            AttributeInstance scaleAttribute = living.getAttribute(Attribute.SCALE);
+            if (scaleAttribute != null) {
+                entityScale = scaleAttribute.getValue();
+            }
         }
 
         this.display.setTransformation(new Transformation(
