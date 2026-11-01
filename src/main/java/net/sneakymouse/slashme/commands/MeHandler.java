@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +36,7 @@ public final class MeHandler {
 		execute(executor, executor, message, duration, commandName);
 	}
 
-	public static void execute(@NotNull Player executor, @NotNull LivingEntity target, @NotNull String message,
+	public static void execute(@NotNull Player executor, @NotNull Entity target, @NotNull String message,
 			int duration, @NotNull String commandName) {
 		message = message.substring(0, Math.min(message.length(), 50));
 
@@ -98,7 +98,7 @@ public final class MeHandler {
 		return SlashMe.getInstance().getConfig().getBoolean("meSpyIncludeYou", false);
 	}
 
-	private static void meSpy(Player executor, LivingEntity target, String message, String commandName) {
+	private static void meSpy(Player executor, Entity target, String message, String commandName) {
 		double meSpyNearRadiusSq = Math.pow(SlashMe.getInstance().getConfig().getInt("meSpyNearRadius", 12), 2);
 		Location targetLocation = target.getLocation();
 
@@ -121,7 +121,7 @@ public final class MeHandler {
 		}
 	}
 
-	private static @NotNull Component makeMeSpyComponent(Player executor, LivingEntity target, String message,
+	private static @NotNull Component makeMeSpyComponent(Player executor, Entity target, String message,
 			String commandName, boolean global) {
 		String playerNameString = SlashMe.getInstance().getConfig().getString("playerNameString", "playerName")
 				.replace("playerName", executor.getName());

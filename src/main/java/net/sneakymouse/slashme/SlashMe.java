@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRemoveEvent;
@@ -64,12 +64,10 @@ public class SlashMe extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onEntityRemove(EntityRemoveEvent event) {
-		if (event.getEntity() instanceof LivingEntity living) {
-			removeEntity(living);
-		}
+		removeEntity(event.getEntity());
 	}
 
-	public void removeEntity(LivingEntity entity) {
+	public void removeEntity(Entity entity) {
 		MeEntity meEntity = entityChatBubbles.remove(entity.getUniqueId());
 		if (meEntity != null)
 			meEntity.remove();
